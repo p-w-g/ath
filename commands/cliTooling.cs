@@ -20,6 +20,8 @@ namespace ath.commands
         WorkingDirectory = workingDirectory
       };
 
+      Console.WriteLine($"Running '{command} {arguments}' in {workingDirectory}");
+
       using var process = new Process { StartInfo = processInfo };
       process.Start();
 
