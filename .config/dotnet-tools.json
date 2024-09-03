@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "ath": {
+      "version": "1.0.0",
+      "commands": [
+        "ath"
+      ],
+      "rollForward": false
+    }
+  }
+}
