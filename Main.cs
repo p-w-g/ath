@@ -17,7 +17,7 @@ switch (command)
     break;
 
   case "fep":
-    ath.commands.FEP.runParallel(commandArgs);
+    await ath.commands.FEP.runParallelAsync(commandArgs);
     break;
 
   default:
