@@ -1,5 +1,4 @@
 using System.Diagnostics;
-
 namespace ath.commands
 {
     public static class cliTooling
@@ -40,6 +39,14 @@ namespace ath.commands
                 Console.WriteLine($"Command failed in {workingDirectory} with error:");
                 Console.WriteLine(error);
             }
+        }
+
+        internal static string[] FilterFlags(string flag, string[] args)
+        {
+            return args != null ? Array.Find(args, arg => arg.Contains(flag))!
+            .Split(flag)[1]
+            .Split("-")
+            .Where(arg => !string.IsNullOrWhiteSpace(arg)).ToArray() : [];
         }
     }
 }
