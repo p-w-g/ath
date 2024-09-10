@@ -16,24 +16,36 @@ namespace ath.commands
                 return;
             }
 
-            bool skip = args.Any(arg => arg.StartsWith("--skip"));
-            bool only = args.Any(arg => arg.StartsWith("--only"));
+            string[] allFolders = Directory.GetDirectories(Directory.GetCurrentDirectory());
 
-            string[] skippedFlag = skip && args != null ? Array.Find(args, arg => arg.Contains("--skip-"))!.Split("--skip-")[1].Split("-") : [];
-            string[] onlyFlag = only && args != null ? Array.Find(args, arg => arg.Contains("--only-"))!.Split("--only-")[1].Split("-") : [];
+            bool skip = args?.Any(arg => arg.StartsWith("--skip")) ?? false;
+            string[] skippedFlags = skip ? cliTooling.FilterFlags("--skip", args) : [];
+            if (skip && skippedFlags.Length < 1)
+            {
+                Console.WriteLine("Is 'skip' flag properly used?");
+                return;
+            }
+            string[] skippedFolders = allFolders.Where(dir => !skippedFlags.Any(flag => dir.Contains(flag))).ToArray();
+
+            bool only = args?.Any(arg => arg.StartsWith("--only")) ?? false;
+            string[] onlyFlags = only ? cliTooling.FilterFlags("--only", args) : [];
+            if (only && onlyFlags.Length < 1)
+            {
+                Console.WriteLine("Is 'only' flag properly used?");
+                return;
+            }
+            string[] onlyFolders = allFolders.Where(dir => onlyFlags.Any(flag => dir.Contains(flag))).ToArray();
 
             string innerCommand = filteredArgs[0];
             string innerCommandArgs = filteredArgs.Length > 1 ? string.Join(" ", filteredArgs[1..]) : string.Empty;
 
-            string[] directories = Directory.GetDirectories(Directory.GetCurrentDirectory());
-
-            string[] filteredDirectories = skip
-            ? directories.Where(dir => skippedFlag.Any(flag => !dir.Contains(flag))).ToArray()
+            string[] remainindFolders = skip
+            ? skippedFolders
             : only
-            ? directories.Where(dir => onlyFlag.Any(flag => dir.Contains(flag))).ToArray()
-            : directories;
+                ? onlyFolders
+                : allFolders;
 
-            var tasks = filteredDirectories.Select(dir => Task.Run(() => cliTooling.RunCommand(innerCommand, innerCommandArgs, dir))).ToArray();
+            var tasks = remainindFolders.Select(dir => Task.Run(() => cliTooling.RunCommand(innerCommand, innerCommandArgs, dir))).ToArray();
             await Task.WhenAll(tasks);
         }
     }
