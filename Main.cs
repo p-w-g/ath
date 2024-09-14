@@ -22,6 +22,14 @@ switch (command)
         ath.commands.Config.PrintConfigPath();
         break;
 
+    case "swd":
+        ath.commands.Config.SetWorkingDirectory();
+        break;
+
+    case "uwd":
+        ath.commands.Config.UnsetWorkingDirectory();
+        break;
+
     default:
         Console.WriteLine($"Unknown command: {command}");
         break;
