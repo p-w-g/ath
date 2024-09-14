@@ -4,11 +4,15 @@ namespace ath.commands
     {
         public static void ShowHelp()
         {
-            Console.WriteLine("Available commands:");
-            Console.WriteLine("  help    - Show help information");
-            Console.WriteLine("  fep     - Run command for nested folders in CWD.");
-            Console.WriteLine("            takes a list of optional folders to either skip or run command in, separated by -");
-            Console.WriteLine("            ath fep <<command>> [--skip-foo-bar-baz || --only-gris-gras-gres]");
+            string HelpText = @"
+    Available commands:
+        help    - Show help information
+        fep     - Run command for nested folders in CWD.
+                takes a list of optional folders to either skip or run command in, separated by '-'
+                ath fep <<command>> [--skip-foo-bar-baz || --only-gris-gras-gres]
+        pcp     prints out config file's path
+            ";
+            Console.WriteLine(HelpText);
         }
     }
 }
