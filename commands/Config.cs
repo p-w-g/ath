@@ -61,5 +61,35 @@ namespace ath.commands
             config.DefaultFolder = null;
             SaveConfig(config);
         }
+
+        public static void SetIgnoredDirectories(string[] folders)
+        {
+            if (folders.Length == 0)
+            {
+                Console.WriteLine("Usage: ath ignore <list of folders separated by space>");
+                return;
+            }
+            Config config = GetConfig();
+
+            if (config.IgnoredFolders == null)
+            {
+                config.IgnoredFolders = [.. folders];
+            }
+            else
+            {
+                foreach (var folder in folders)
+                {
+                    if (config.IgnoredFolders.Contains(folder))
+                    {
+                        Console.WriteLine($"{folder} is already in the ignored folders list, skipping.");
+                        continue;
+                    }
+                    config.IgnoredFolders.Add(folder);
+                    Console.WriteLine($"{folder} added to permanently ignored folders list");
+                }
+            }
+
+            SaveConfig(config);
+        }
     }
 }
