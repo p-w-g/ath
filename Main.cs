@@ -15,7 +15,7 @@ switch (command)
         break;
 
     case "fep":
-        await ath.commands.FEP.runParallelAsync(commandArgs);
+        await ath.commands.FEP.RunParallelAsync(commandArgs);
         break;
 
     default:

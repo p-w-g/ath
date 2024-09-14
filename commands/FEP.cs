@@ -2,7 +2,7 @@ namespace ath.commands
 {
     public static class FEP
     {
-        public static async Task runParallelAsync(string[] args)
+        public static async Task RunParallelAsync(string[] args)
         {
             if (args.Length == 0)
             {
