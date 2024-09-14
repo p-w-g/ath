@@ -91,5 +91,47 @@ namespace ath.commands
 
             SaveConfig(config);
         }
+
+        public static void UnsetIgnoredDirectories(string[] folders)
+        {
+            if (folders.Length == 0)
+            {
+                Console.WriteLine("Usage: ath unignore <list of folders separated by space>");
+                return;
+            }
+
+            Config config = GetConfig();
+            string deepCopy = JsonSerializer.Serialize(config);
+            Config prevConfig = JsonSerializer.Deserialize<Config>(deepCopy)!;
+
+            if (config.IgnoredFolders == null)
+            {
+                Console.WriteLine("That list is already empty");
+                return;
+            }
+
+            foreach (var folder in folders)
+            {
+                if (config.IgnoredFolders.Contains(folder))
+                {
+                    config.IgnoredFolders.Remove(folder);
+                    Console.WriteLine($"{folder} removed from permanently ignored folders list");
+                }
+                else
+                {
+                    Console.WriteLine($"{folder} isn't present in ignored folders list, skipping.");
+                    continue;
+                }
+            }
+
+            if (JsonSerializer.Serialize(config) != JsonSerializer.Serialize(prevConfig))
+            {
+                SaveConfig(config);
+            }
+            else
+            {
+                Console.WriteLine("No changes detected. Config file not saved.");
+            }
+        }
     }
 }
