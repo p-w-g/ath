@@ -18,7 +18,7 @@ switch (command)
         await ath.commands.FEP.RunParallelAsync(commandArgs);
         break;
 
-    case "pcd":
+    case "pcp":
         ath.commands.Config.PrintConfigPath();
         break;
 
