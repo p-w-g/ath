@@ -18,6 +18,10 @@ switch (command)
         await ath.commands.FEP.RunParallelAsync(commandArgs);
         break;
 
+    case "pcd":
+        ath.commands.Config.PrintConfigPath();
+        break;
+
     default:
         Console.WriteLine($"Unknown command: {command}");
         break;
