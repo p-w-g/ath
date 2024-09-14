@@ -30,6 +30,14 @@ switch (command)
         ath.commands.Config.UnsetWorkingDirectory();
         break;
 
+    case "ignore":
+        ath.commands.Config.SetIgnoredDirectories(commandArgs);
+        break;
+
+    case "unignore":
+        ath.commands.Config.UnsetIgnoredDirectories(commandArgs);
+        break;
+
     default:
         Console.WriteLine($"Unknown command: {command}");
         break;
