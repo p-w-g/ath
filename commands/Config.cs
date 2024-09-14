@@ -29,6 +29,12 @@ namespace ath.commands
             Console.WriteLine(defaultConfigPath);
         }
 
+        public static void PrintConfig()
+        {
+            string config = File.ReadAllText(defaultConfigPath);
+            Console.WriteLine(config);
+        }
+
         public static Config GetConfig()
         {
             if (!File.Exists(defaultConfigPath))
