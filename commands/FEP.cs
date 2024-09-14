@@ -16,7 +16,12 @@ namespace ath.commands
                 return;
             }
 
-            string[] allFolders = Directory.GetDirectories(Directory.GetCurrentDirectory());
+            Config config = Config.GetConfig();
+            bool DefaultFolderExists = config.DefaultFolder != null;
+
+            string[] allFolders = DefaultFolderExists
+                ? Directory.GetDirectories(config.DefaultFolder!)
+                : Directory.GetDirectories(Directory.GetCurrentDirectory());
 
             bool skip = args?.Any(arg => arg.StartsWith("--skip")) ?? false;
             string[] skippedFlags = skip ? cliTooling.FilterFlags("--skip", args) : [];
@@ -40,10 +45,10 @@ namespace ath.commands
             string innerCommandArgs = filteredArgs.Length > 1 ? string.Join(" ", filteredArgs[1..]) : string.Empty;
 
             string[] remainindFolders = skip
-            ? skippedFolders
-            : only
-                ? onlyFolders
-                : allFolders;
+                ? skippedFolders
+                : only
+                    ? onlyFolders
+                    : allFolders;
 
             var tasks = remainindFolders.Select(dir => Task.Run(() => cliTooling.RunCommand(innerCommand, innerCommandArgs, dir))).ToArray();
             await Task.WhenAll(tasks);

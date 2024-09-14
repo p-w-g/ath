@@ -29,7 +29,7 @@ namespace ath.commands
             Console.WriteLine(defaultConfigPath);
         }
 
-        private static Config GetConfig()
+        public static Config GetConfig()
         {
             if (!File.Exists(defaultConfigPath))
             {
