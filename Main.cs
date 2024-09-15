@@ -22,6 +22,10 @@ switch (command)
         ath.commands.Config.PrintConfigPath();
         break;
 
+    case "pcf":
+        ath.commands.Config.PrintConfig();
+        break;
+
     case "swd":
         ath.commands.Config.SetWorkingDirectory();
         break;
