@@ -12,6 +12,10 @@ then the cli will be available in terminal, run `$ ath help` for starters.
 
 otherwise it should be easily available from nuget
 
+## uninstall
+
+`$ dotnet tool uninstall ath -g`
+
 ## Roadmap (...and whatnot)
 
-Still figuring out the ecosystem.
+Would love to add some testing at some point, and tweak exiting processes.
