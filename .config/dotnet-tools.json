@@ -3,10 +3,8 @@
   "isRoot": true,
   "tools": {
     "ath": {
-      "version": "1.0.3",
-      "commands": [
-        "ath"
-      ],
+      "version": "1.1.0",
+      "commands": ["ath"],
       "rollForward": false
     }
   }
