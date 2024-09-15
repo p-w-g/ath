@@ -15,7 +15,31 @@ switch (command)
         break;
 
     case "fep":
-        await ath.commands.FEP.runParallelAsync(commandArgs);
+        await ath.commands.FEP.RunParallelAsync(commandArgs);
+        break;
+
+    case "pcp":
+        ath.commands.Config.PrintConfigPath();
+        break;
+
+    case "pcf":
+        ath.commands.Config.PrintConfig();
+        break;
+
+    case "swd":
+        ath.commands.Config.SetWorkingDirectory();
+        break;
+
+    case "uwd":
+        ath.commands.Config.UnsetWorkingDirectory();
+        break;
+
+    case "ignore":
+        ath.commands.Config.SetIgnoredDirectories(commandArgs);
+        break;
+
+    case "unignore":
+        ath.commands.Config.UnsetIgnoredDirectories(commandArgs);
         break;
 
     default:

@@ -1,5 +1,21 @@
 # Changelog
 
+Changelog template based on:
+https://keepachangelog.com/en/1.1.0/
+
+## [1.1.0] - 2024-09-15
+
+### Added
+
+- Config - added file for storing following configuration:
+  - ignore - permanently ignored folders, ie .git, bin.
+  - working directory - enforces current working directory as future target, makes possible to work in a single folder and modify all siblings without `cd .. && <...>`
+
+### Changed
+
+- Naming convention for Upper/lowerCase functions and some indendation. Subject to future changes.
+
+
 ## [1.0.3] - 2024-09-10
 
 ### Fixed
