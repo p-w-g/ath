@@ -26,11 +26,21 @@ namespace ath.commands
 
         public static void PrintConfigPath()
         {
+            if (!File.Exists(defaultConfigPath))
+            {
+                Console.WriteLine("config file doesn't exist");
+                return;
+            }
             Console.WriteLine(defaultConfigPath);
         }
 
         public static void PrintConfig()
         {
+            if (!File.Exists(defaultConfigPath))
+            {
+                Console.WriteLine("config file doesn't exist");
+                return;
+            }
             string config = File.ReadAllText(defaultConfigPath);
             Console.WriteLine(config);
         }
