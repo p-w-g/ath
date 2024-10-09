@@ -3,12 +3,10 @@ namespace ath.commands
 {
     public static class cliTooling
     {
-        internal static void RunCommand(string command, string arguments, string workingDirectory = "")
+        internal static async Task RunCommand(string command, string arguments, string workingDirectory = "")
         {
-            // Determine the shell to use based on the operating system
             string shell = Environment.OSVersion.Platform == PlatformID.Win32NT ? "cmd.exe" : "/bin/bash";
             string shellArguments = Environment.OSVersion.Platform == PlatformID.Win32NT ? $"/c {command} {arguments}" : $"-c \"{command} {arguments}\"";
-
 
             var processInfo = new ProcessStartInfo(shell, shellArguments)
             {
@@ -21,23 +19,44 @@ namespace ath.commands
 
             Console.WriteLine($"Running '{command} {arguments}' in {workingDirectory}");
 
-            using var process = new Process { StartInfo = processInfo };
-            process.Start();
+            using Process process = new() { StartInfo = processInfo };
 
-            string output = process.StandardOutput.ReadToEnd();
-            string error = process.StandardError.ReadToEnd();
-
-            process.WaitForExit();
-
-            if (process.ExitCode == 0)
+            try
             {
-                Console.WriteLine($"Command executed successfully in {workingDirectory}.");
-                Console.WriteLine(output);
+                process.Start();
+
+                Task<string> output = process.StandardOutput.ReadToEndAsync();
+                Task<string> error = process.StandardError.ReadToEndAsync();
+
+                bool exited = await Task.Run(() => process.WaitForExit(300000));
+
+                if (!exited)
+                {
+                    Console.WriteLine($"Command timed out in {workingDirectory} after 5 minutes.");
+                    process.Kill();
+                    return;
+                }
+
+                if (process.ExitCode == 0)
+                {
+                    Console.WriteLine($"Command executed successfully in {workingDirectory}.");
+                    Console.WriteLine(await output);
+                }
+                else
+                {
+                    Console.WriteLine($"Command failed gracefully in {workingDirectory}.");
+                    Console.WriteLine(await error);
+                }
+
             }
-            else
+            catch (Exception e)
             {
-                Console.WriteLine($"Command failed in {workingDirectory} with error:");
-                Console.WriteLine(error);
+                Console.WriteLine($"Caught exception in {workingDirectory} with error:");
+                Console.WriteLine(e);
+            }
+            finally
+            {
+                process.Dispose();
             }
         }
 
