@@ -18,4 +18,4 @@ otherwise it should be easily available from nuget
 
 ## Roadmap (...and whatnot)
 
-Would love to add some testing at some point, and tweak exiting processes.
+Would love to add some testing at some point, and maybe spawn a deamon.
