@@ -3,7 +3,7 @@ namespace ath.commands
 {
     public static class cliTooling
     {
-        internal static async Task RunCommand(string command, string arguments, string workingDirectory = "")
+        internal static async Task RunCommand(string command, string arguments, string workingDirectory = "", bool sustain = false)
         {
             string shell = Environment.OSVersion.Platform == PlatformID.Win32NT ? "cmd.exe" : "/bin/bash";
             string shellArguments = Environment.OSVersion.Platform == PlatformID.Win32NT ? $"/c {command} {arguments}" : $"-c \"{command} {arguments}\"";
@@ -28,13 +28,19 @@ namespace ath.commands
                 Task<string> output = process.StandardOutput.ReadToEndAsync();
                 Task<string> error = process.StandardError.ReadToEndAsync();
 
-                bool exited = await Task.Run(() => process.WaitForExit(300000));
-
-                if (!exited)
+                if (sustain)
                 {
-                    Console.WriteLine($"Command timed out in {workingDirectory} after 5 minutes.");
-                    process.Kill();
-                    return;
+                    process.WaitForExit();
+                }
+                else
+                {
+                    bool exited = await Task.Run(() => process.WaitForExit(300000));
+                    if (!exited)
+                    {
+                        Console.WriteLine($"Command timed out in {workingDirectory} after 5 minutes.");
+                        process.Kill();
+                        return;
+                    }
                 }
 
                 if (process.ExitCode == 0)

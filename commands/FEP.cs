@@ -57,7 +57,9 @@ namespace ath.commands
                     ? onlyFolders
                     : allFolders;
 
-            Task[] tasks = [.. remainindFolders.Select(dir => Task.Run(() => cliTooling.RunCommand(innerCommand, innerCommandArgs, dir)))];
+            bool sustain = args?.Any(arg => arg.StartsWith("--sustain")) ?? false;
+
+            Task[] tasks = [.. remainindFolders.Select(dir => Task.Run(() => cliTooling.RunCommand(innerCommand, innerCommandArgs, dir, sustain)))];
             await Task.WhenAll(tasks);
         }
     }
