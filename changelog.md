@@ -3,6 +3,18 @@
 Changelog template based on:
 https://keepachangelog.com/en/1.1.0/
 
+## [1.1.2] - 2024-10-23
+
+### Added
+
+- Task Runner Flags
+  - sustain - ignore timeout settings for current task execution
+  - local - ignore working directory setting for current task execution
+
+### Fixed
+
+- Return early when missing a command and provide feedback
+
 ## [1.1.1] - 2024-10-09
 
 ### Fixed
