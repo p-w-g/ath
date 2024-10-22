@@ -1,12 +1,10 @@
-﻿string command = args[0].ToLower();
-string[] commandArgs = args.Length > 1 ? args[1..] : Array.Empty<string>();
-
-
-if (args.Length == 0)
+﻿if (args.Length == 0)
 {
     Console.WriteLine("Usage: ath <command> [arguments]");
     return;
 }
+string command = args[0].ToLower();
+string[] commandArgs = args.Length > 1 ? args[1..] : Array.Empty<string>();
 
 switch (command)
 {

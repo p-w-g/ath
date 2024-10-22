@@ -20,6 +20,12 @@ namespace ath.commands
             bool DefaultFolderExists = config.DefaultFolder != null;
             bool IgnoredFoldersExists = config.IgnoredFolders != null;
             string[] IgnoredFolders = IgnoredFoldersExists ? [.. config.IgnoredFolders!] : [];
+            bool runLocal = args?.Any(arg => arg.StartsWith("--local")) ?? false;
+
+            if (runLocal)
+            {
+                DefaultFolderExists = false;
+            }
 
             string[] allFolders = DefaultFolderExists
                 ? Directory.GetDirectories(config.DefaultFolder!)
@@ -57,7 +63,9 @@ namespace ath.commands
                     ? onlyFolders
                     : allFolders;
 
-            Task[] tasks = [.. remainindFolders.Select(dir => Task.Run(() => cliTooling.RunCommand(innerCommand, innerCommandArgs, dir)))];
+            bool sustain = args?.Any(arg => arg.StartsWith("--sustain")) ?? false;
+
+            Task[] tasks = [.. remainindFolders.Select(dir => Task.Run(() => cliTooling.RunCommand(innerCommand, innerCommandArgs, dir, sustain)))];
             await Task.WhenAll(tasks);
         }
     }
