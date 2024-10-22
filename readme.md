@@ -1,21 +1,60 @@
 # Async Task Helper
 
-The whole idea is to run tasks in multiple folders concurrently - hence the name.
+The `ath` CLI currently consists of two main components: a task helper and a configuration file. These components allow you to run commands across multiple folders and customize how the tool behaves in your environment.
 
-## "install from repo"
+## Quickstart
 
-If this was cloned from github
+### Install via NuGet
 
-`$ dotnet pack ath.generated.sln; dotnet tool install --global --add-source ./nupkg ath`
+The latest stable release is available as a package on [NuGet][nuget]
 
-then the cli will be available in terminal, run `$ ath help` for starters.
+To install globally, just run the following:
 
-otherwise it should be easily available from nuget
+```sh
+dotnet tool install --global ath
+```
 
-## uninstall
+### Install via GitHub
 
-`$ dotnet tool uninstall ath -g`
+If you've cloned the project directly from the [GitHub repo][github], follow these steps in the project folder
 
-## Roadmap (...and whatnot)
+```sh
+dotnet pack ath.generated.sln
+dotnet tool install --global --add-source ./nupkg ath
+```
 
-Would love to add some testing at some point, and maybe spawn a daemon.
+This will build the tool locally and install it from the generated package.
+
+### Sanity check
+
+To confirm that everything is working properly, run:
+
+```sh
+ath help
+```
+
+If you see the help menu, you’re good to go!
+
+### Usage
+
+```sh
+ath fep <<command>> [--skip-foo-bar-baz || --only-gris-gras-gräs]
+```
+
+## Full documentation
+
+https://ath-docs.netlify.app/
+
+## Uninstall
+
+If you need to uninstall `ath` for any reason, you can do so with:
+
+```sh
+dotnet tool uninstall ath -g
+```
+
+This will remove the global installation of ath.
+
+[dotnet]: https://dotnet.microsoft.com/en-us/download
+[nuget]: https://www.nuget.org/packages/ath/
+[github]: https://github.com/p-w-g/ath
