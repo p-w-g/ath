@@ -20,6 +20,12 @@ namespace ath.commands
             bool DefaultFolderExists = config.DefaultFolder != null;
             bool IgnoredFoldersExists = config.IgnoredFolders != null;
             string[] IgnoredFolders = IgnoredFoldersExists ? [.. config.IgnoredFolders!] : [];
+            bool runLocal = args?.Any(arg => arg.StartsWith("--local")) ?? false;
+
+            if (runLocal)
+            {
+                DefaultFolderExists = false;
+            }
 
             string[] allFolders = DefaultFolderExists
                 ? Directory.GetDirectories(config.DefaultFolder!)
