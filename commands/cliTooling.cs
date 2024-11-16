@@ -1,12 +1,22 @@
 using System.Diagnostics;
+
 namespace ath.commands
 {
     public static class cliTooling
     {
-        internal static async Task RunCommand(string command, string arguments, string workingDirectory = "", bool sustain = false)
+        internal static async Task RunCommand(
+            string command,
+            string arguments,
+            string workingDirectory = "",
+            bool sustain = false
+        )
         {
-            string shell = Environment.OSVersion.Platform == PlatformID.Win32NT ? "cmd.exe" : "/bin/bash";
-            string shellArguments = Environment.OSVersion.Platform == PlatformID.Win32NT ? $"/c {command} {arguments}" : $"-c \"{command} {arguments}\"";
+            string shell =
+                Environment.OSVersion.Platform == PlatformID.Win32NT ? "cmd.exe" : "/bin/bash";
+            string shellArguments =
+                Environment.OSVersion.Platform == PlatformID.Win32NT
+                    ? $"/c {command} {arguments}"
+                    : $"-c \"{command} {arguments}\"";
 
             var processInfo = new ProcessStartInfo(shell, shellArguments)
             {
@@ -14,7 +24,7 @@ namespace ath.commands
                 RedirectStandardError = true,
                 UseShellExecute = false,
                 CreateNoWindow = true,
-                WorkingDirectory = workingDirectory
+                WorkingDirectory = workingDirectory,
             };
 
             Console.WriteLine($"Running '{command} {arguments}' in {workingDirectory}");
@@ -37,7 +47,9 @@ namespace ath.commands
                     bool exited = await Task.Run(() => process.WaitForExit(300000));
                     if (!exited)
                     {
-                        Console.WriteLine($"Command timed out in {workingDirectory} after 5 minutes.");
+                        Console.WriteLine(
+                            $"Command timed out in {workingDirectory} after 5 minutes."
+                        );
                         process.Kill();
                         return;
                     }
@@ -53,7 +65,6 @@ namespace ath.commands
                     Console.WriteLine($"Command failed gracefully in {workingDirectory}.");
                     Console.WriteLine(await error);
                 }
-
             }
             catch (Exception e)
             {
@@ -68,10 +79,14 @@ namespace ath.commands
 
         internal static string[] FilterFlags(string flag, string[] args)
         {
-            return args != null ? Array.Find(args, arg => arg.Contains(flag))!
-            .Split(flag)[1]
-            .Split("-")
-            .Where(arg => !string.IsNullOrWhiteSpace(arg)).ToArray() : [];
+            return args != null
+                ? Array
+                    .Find(args, arg => arg.Contains(flag))!
+                    .Split(flag)[1]
+                    .Split("-")
+                    .Where(arg => !string.IsNullOrWhiteSpace(arg))
+                    .ToArray()
+                : [];
         }
     }
 }

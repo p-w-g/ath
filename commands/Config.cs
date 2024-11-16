@@ -8,6 +8,7 @@ namespace ath.commands
     {
         [JsonPropertyName("defaultFolder")]
         public string? DefaultFolder { get; set; }
+
         [JsonPropertyName("ignoredFolders")]
         public List<string>? IgnoredFolders { get; set; }
 
@@ -16,12 +17,15 @@ namespace ath.commands
             bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
             if (IsWindows)
             {
-                string UserProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                string UserProfile = Environment.GetFolderPath(
+                    Environment.SpecialFolder.UserProfile
+                );
                 return UserProfile;
             }
             string NixHome = Environment.GetEnvironmentVariable("HOME") ?? "/";
             return NixHome;
         }
+
         static readonly string defaultConfigPath = Path.Combine(GetHomeDir(), ".athconfig");
 
         public static void PrintConfigPath()
@@ -58,7 +62,10 @@ namespace ath.commands
 
         private static void SaveConfig(Config config)
         {
-            string configJson = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
+            string configJson = JsonSerializer.Serialize(
+                config,
+                new JsonSerializerOptions { WriteIndented = true }
+            );
             File.WriteAllText(defaultConfigPath, configJson);
             Console.WriteLine("Config file updated successfully!");
         }
@@ -97,7 +104,9 @@ namespace ath.commands
                 {
                     if (config.IgnoredFolders.Contains(folder))
                     {
-                        Console.WriteLine($"{folder} is already in the ignored folders list, skipping.");
+                        Console.WriteLine(
+                            $"{folder} is already in the ignored folders list, skipping."
+                        );
                         continue;
                     }
                     config.IgnoredFolders.Add(folder);

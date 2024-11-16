@@ -4,7 +4,8 @@ namespace ath.commands
     {
         public static void ShowHelp()
         {
-            string HelpText = @"
+            string HelpText =
+                @"
     Available commands:
  
         help        - Show help information

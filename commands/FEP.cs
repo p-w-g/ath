@@ -6,13 +6,20 @@ namespace ath.commands
         {
             if (args.Length == 0)
             {
-                Console.WriteLine("Usage: ath fep <command> [--skip-folder-folder || --only-folder-folder]");
+                Console.WriteLine(
+                    "Usage: ath fep <command> [--skip-folder-folder || --only-folder-folder]"
+                );
                 return;
             }
-            string[] filteredArgs = [.. args.Where(arg => !arg.Contains("--skip-") && !arg.Contains("--only-"))];
+            string[] filteredArgs =
+            [
+                .. args.Where(arg => !arg.Contains("--skip-") && !arg.Contains("--only-")),
+            ];
             if (filteredArgs.Length == 0)
             {
-                Console.WriteLine("Usage: ath fep <command> [--skip-folder-folder || --only-folder-folder]");
+                Console.WriteLine(
+                    "Usage: ath fep <command> [--skip-folder-folder || --only-folder-folder]"
+                );
                 return;
             }
 
@@ -33,7 +40,10 @@ namespace ath.commands
 
             if (IgnoredFoldersExists)
             {
-                allFolders = [.. allFolders.Where(dir => !IgnoredFolders.Any(folder => dir.Contains(folder)))];
+                allFolders =
+                [
+                    .. allFolders.Where(dir => !IgnoredFolders.Any(folder => dir.Contains(folder))),
+                ];
             }
 
             bool skip = args?.Any(arg => arg.StartsWith("--skip")) ?? false;
@@ -43,7 +53,10 @@ namespace ath.commands
                 Console.WriteLine("Is 'skip' flag properly used?");
                 return;
             }
-            string[] skippedFolders = [.. allFolders.Where(dir => !skippedFlags.Any(flag => dir.Contains(flag)))];
+            string[] skippedFolders =
+            [
+                .. allFolders.Where(dir => !skippedFlags.Any(flag => dir.Contains(flag))),
+            ];
 
             bool only = args?.Any(arg => arg.StartsWith("--only")) ?? false;
             string[] onlyFlags = only ? cliTooling.FilterFlags("--only", args) : [];
@@ -52,20 +65,30 @@ namespace ath.commands
                 Console.WriteLine("Is 'only' flag properly used?");
                 return;
             }
-            string[] onlyFolders = [.. allFolders.Where(dir => onlyFlags.Any(flag => dir.Contains(flag)))];
+            string[] onlyFolders =
+            [
+                .. allFolders.Where(dir => onlyFlags.Any(flag => dir.Contains(flag))),
+            ];
 
             string innerCommand = filteredArgs[0];
-            string innerCommandArgs = filteredArgs.Length > 1 ? string.Join(" ", filteredArgs[1..]) : string.Empty;
+            string innerCommandArgs =
+                filteredArgs.Length > 1 ? string.Join(" ", filteredArgs[1..]) : string.Empty;
 
-            string[] remainindFolders = skip
-                ? skippedFolders
-                : only
-                    ? onlyFolders
-                    : allFolders;
+            string[] remainindFolders =
+                skip ? skippedFolders
+                : only ? onlyFolders
+                : allFolders;
 
             bool sustain = args?.Any(arg => arg.StartsWith("--sustain")) ?? false;
 
-            Task[] tasks = [.. remainindFolders.Select(dir => Task.Run(() => cliTooling.RunCommand(innerCommand, innerCommandArgs, dir, sustain)))];
+            Task[] tasks =
+            [
+                .. remainindFolders.Select(dir =>
+                    Task.Run(
+                        () => cliTooling.RunCommand(innerCommand, innerCommandArgs, dir, sustain)
+                    )
+                ),
+            ];
             await Task.WhenAll(tasks);
         }
     }
