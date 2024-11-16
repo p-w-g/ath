@@ -23,29 +23,6 @@ namespace ath.commands
                 return;
             }
 
-            Config config = Config.GetConfig();
-            bool DefaultFolderExists = config.DefaultFolder != null;
-            bool IgnoredFoldersExists = config.IgnoredFolders != null;
-            string[] IgnoredFolders = IgnoredFoldersExists ? [.. config.IgnoredFolders!] : [];
-            bool runLocal = args?.Any(arg => arg.StartsWith("--local")) ?? false;
-
-            if (runLocal)
-            {
-                DefaultFolderExists = false;
-            }
-
-            string[] allFolders = DefaultFolderExists
-                ? Directory.GetDirectories(config.DefaultFolder!)
-                : Directory.GetDirectories(Directory.GetCurrentDirectory());
-
-            if (IgnoredFoldersExists)
-            {
-                allFolders =
-                [
-                    .. allFolders.Where(dir => !IgnoredFolders.Any(folder => dir.Contains(folder))),
-                ];
-            }
-
             bool skip = args?.Any(arg => arg.StartsWith("--skip")) ?? false;
             string[] skippedFlags = skip ? cliUtils.FilterFlags("--skip", args) : [];
             if (skip && skippedFlags.Length < 1)
@@ -53,10 +30,6 @@ namespace ath.commands
                 Console.WriteLine("Is 'skip' flag properly used?");
                 return;
             }
-            string[] skippedFolders =
-            [
-                .. allFolders.Where(dir => !skippedFlags.Any(flag => dir.Contains(flag))),
-            ];
 
             bool only = args?.Any(arg => arg.StartsWith("--only")) ?? false;
             string[] onlyFlags = only ? cliUtils.FilterFlags("--only", args) : [];
@@ -65,29 +38,22 @@ namespace ath.commands
                 Console.WriteLine("Is 'only' flag properly used?");
                 return;
             }
-            string[] onlyFolders =
-            [
-                .. allFolders.Where(dir => onlyFlags.Any(flag => dir.Contains(flag))),
-            ];
 
             string innerCommand = filteredArgs[0];
             string innerCommandArgs =
                 filteredArgs.Length > 1 ? string.Join(" ", filteredArgs[1..]) : string.Empty;
 
-            string[] remainindFolders =
-                skip ? skippedFolders
-                : only ? onlyFolders
-                : allFolders;
-
             bool sustain = args?.Any(arg => arg.StartsWith("--sustain")) ?? false;
 
             Task[] tasks =
             [
-                .. remainindFolders.Select(dir =>
-                    Task.Run(
-                        () => cliUtils.RunCommand(innerCommand, innerCommandArgs, dir, sustain)
-                    )
-                ),
+                .. cliUtils
+                    .AvailableDirectories(args)
+                    .Select(dir =>
+                        Task.Run(
+                            () => cliUtils.RunCommand(innerCommand, innerCommandArgs, dir, sustain)
+                        )
+                    ),
             ];
             await Task.WhenAll(tasks);
         }
