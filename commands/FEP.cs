@@ -47,7 +47,7 @@ namespace ath.commands
             }
 
             bool skip = args?.Any(arg => arg.StartsWith("--skip")) ?? false;
-            string[] skippedFlags = skip ? cliTooling.FilterFlags("--skip", args) : [];
+            string[] skippedFlags = skip ? cliUtils.FilterFlags("--skip", args) : [];
             if (skip && skippedFlags.Length < 1)
             {
                 Console.WriteLine("Is 'skip' flag properly used?");
@@ -59,7 +59,7 @@ namespace ath.commands
             ];
 
             bool only = args?.Any(arg => arg.StartsWith("--only")) ?? false;
-            string[] onlyFlags = only ? cliTooling.FilterFlags("--only", args) : [];
+            string[] onlyFlags = only ? cliUtils.FilterFlags("--only", args) : [];
             if (only && onlyFlags.Length < 1)
             {
                 Console.WriteLine("Is 'only' flag properly used?");
@@ -85,7 +85,7 @@ namespace ath.commands
             [
                 .. remainindFolders.Select(dir =>
                     Task.Run(
-                        () => cliTooling.RunCommand(innerCommand, innerCommandArgs, dir, sustain)
+                        () => cliUtils.RunCommand(innerCommand, innerCommandArgs, dir, sustain)
                     )
                 ),
             ];

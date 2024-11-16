@@ -2,7 +2,7 @@ using System.Diagnostics;
 
 namespace ath.commands
 {
-    public static class cliTooling
+    public static class cliUtils
     {
         internal static async Task RunCommand(
             string command,
