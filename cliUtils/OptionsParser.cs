@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace ath.commands
 {
     static partial class cliUtils

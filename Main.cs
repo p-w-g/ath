@@ -1,4 +1,6 @@
-﻿if (args.Length == 0)
+﻿using ath.commands;
+
+if (args.Length == 0)
 {
     Console.WriteLine("Usage: ath <command> [arguments]");
     return;
@@ -6,38 +8,52 @@
 string command = args[0].ToLower();
 string[] commandArgs = args.Length > 1 ? args[1..] : Array.Empty<string>();
 
+Dictionary<string, string[]> optionsObject = cliUtils.OptionsParser(commandArgs);
+
 switch (command)
 {
-    case "help" or "h" or "-h" or "--h" or "-help" or "--help":
-        ath.commands.Help.ShowHelp();
+    case "help"
+    or "h"
+    or "-h"
+    or "--h"
+    or "-help"
+    or "--help":
+        Help.ShowHelp();
         break;
 
     case "fep":
-        await ath.commands.FEP.RunParallelAsync(commandArgs);
+        // TODO: implement as follows
+        // await FEP.RunParallelAsync(optionsObject);
+        await FEP.RunParallelAsync(commandArgs);
         break;
 
+    // TODO: implement
+    // case "config":
+    //     Config.SetConfig(optionsObject);
+    //     break;
+
     case "pcp":
-        ath.commands.Config.PrintConfigPath();
+        Config.PrintConfigPath();
         break;
 
     case "pcf":
-        ath.commands.Config.PrintConfig();
+        Config.PrintConfig();
         break;
 
     case "swd":
-        ath.commands.Config.SetWorkingDirectory();
+        Config.SetWorkingDirectory();
         break;
 
     case "uwd":
-        ath.commands.Config.UnsetWorkingDirectory();
+        Config.UnsetWorkingDirectory();
         break;
 
     case "ignore":
-        ath.commands.Config.SetIgnoredDirectories(commandArgs);
+        Config.SetIgnoredDirectories(commandArgs);
         break;
 
     case "unignore":
-        ath.commands.Config.UnsetIgnoredDirectories(commandArgs);
+        Config.UnsetIgnoredDirectories(commandArgs);
         break;
 
     default:
