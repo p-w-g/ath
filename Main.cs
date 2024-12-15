@@ -22,9 +22,7 @@ switch (command)
         break;
 
     case "fep":
-        // TODO: implement as follows
-        // await FEP.RunParallelAsync(optionsObject);
-        await FEP.RunParallelAsync(commandArgs);
+        await FEP.RunParallelAsync(optionsObject);
         break;
 
     // TODO: implement
