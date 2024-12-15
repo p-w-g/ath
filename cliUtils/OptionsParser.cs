@@ -1,6 +1,6 @@
 namespace ath.commands
 {
-    static partial class cliUtils
+    partial class cliUtils
     {
         private static readonly HashSet<string> ValidOptions = new HashSet<string>
         {
@@ -18,7 +18,15 @@ namespace ath.commands
             var parsedOptions = args.Where(arg => arg.StartsWith("--"))
                 .Select(arg => arg.TrimStart('-'))
                 .Select(option => optionParams(option, additionalParams))
-                .Where(option => ValidOptions.Contains(option.ToLower()));
+                .Where(option => ValidOptions.Contains(option.ToLower()))
+                .ToList();
+
+            // options object needs "internal command" field
+            // ie git status along with its own --prune
+
+            // and it needs to ignore already parsed options so that I dont have doubles
+
+            // and add workingdirectory to options object
 
             return additionalParams;
         }
