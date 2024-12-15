@@ -30,6 +30,16 @@
       "cwd": "${workspaceFolder}",
       "stopAtEntry": false,
       "console": "internalConsole"
+    },
+    {
+      "name": "skip",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/bin/Debug/net8.0/ath.dll",
+      "args": ["fep", "git", "status", "--skip-fr-land"],
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false,
+      "console": "internalConsole"
     }
   ]
 }
