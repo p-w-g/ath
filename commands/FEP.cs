@@ -57,5 +57,18 @@ namespace ath.commands
             ];
             await Task.WhenAll(tasks);
         }
+
+        public static async Task RunParallelAsync(Dictionary<string, string[]> optionsObject)
+        {
+            //  defensive checks
+
+            string[] availableDirs = cliUtils.GetAvailableDirectories(optionsObject);
+
+            // Task[] tasks =
+            // [
+            //     availableDirs.Select(dir => Task.Run(() => cliUtils.RunCommand(optionsObject))),
+            // ];
+            // await Task.WhenAll(tasks);
+        }
     }
 }
