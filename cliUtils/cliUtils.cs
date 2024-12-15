@@ -1,6 +1,6 @@
 namespace ath.commands
 {
-    public static partial class cliUtils
+    public partial class cliUtils
     {
         internal static string[] FilterFlags(string flag, string[] args)
         {
