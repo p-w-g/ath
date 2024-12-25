@@ -11,43 +11,44 @@ namespace ath.commands
             "timeout",
         };
 
-        internal static Dictionary<string, string[]> OptionsParser(string[] args)
+        private static Dictionary<string, string[]> InstanceObject = [];
+
+        internal static Dictionary<string, string[]> InstanceParser(string[] args)
         {
-            Dictionary<string, string[]> additionalParams = [];
+            foreach (string arg in args)
+            {
+                ParseArgument(arg);
+            }
 
-            var parsedOptions = args.Where(arg => arg.StartsWith("--"))
-                .Select(arg => arg.TrimStart('-'))
-                .Select(option => optionParams(option, additionalParams))
-                .Where(option => ValidOptions.Contains(option.ToLower()))
-                .ToList();
-
-            // options object needs "internal command" field
-            // ie git status along with its own --prune
-
-            // and it needs to ignore already parsed options so that I dont have doubles
-
-            // and add workingdirectory to options object
-
-            return additionalParams;
+            return InstanceObject;
         }
 
-        internal static string optionParams(
-            string option,
-            Dictionary<string, string[]> additionalParams
-        )
+        internal static void ParseArgument(string arg)
         {
-            if (option.Contains('-'))
+            // payload
+            // ie git status along with its own --prune
+            // command
+            // workingdirectory
+
+            //options
+            if (arg.StartsWith("--"))
             {
-                string name = option.Split('-')[0];
-                string[] adds = option.Split('-')[1..];
-                additionalParams.Add(name, adds);
-                return name;
+                arg = arg.TrimStart('-');
+                string option = arg.Split('-')[0];
+                bool isInternal = ValidOptions.Contains(option);
+                if (isInternal)
+                {
+                    ParseOptions(arg);
+                }
             }
-            else
-            {
-                additionalParams.Add(option, []);
-                return option;
-            }
+        }
+
+        internal static void ParseOptions(string option)
+        {
+            string key = option.Split('-')[0];
+            string[] values = option.Split('-')[1..] ?? [];
+
+            InstanceObject.Add(key, values);
         }
     }
 }
