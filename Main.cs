@@ -8,7 +8,7 @@ if (args.Length == 0)
 string command = args[0].ToLower();
 string[] commandArgs = args.Length > 1 ? args[1..] : Array.Empty<string>();
 
-Dictionary<string, string[]> optionsObject = cliUtils.OptionsParser(commandArgs);
+Dictionary<string, string[]> Instance = cliUtils.InstanceParser(args);
 
 switch (command)
 {
@@ -22,7 +22,7 @@ switch (command)
         break;
 
     case "fep":
-        await FEP.RunParallelAsync(optionsObject);
+        await FEP.RunParallelAsync(Instance);
         break;
 
     // TODO: implement
