@@ -9,14 +9,7 @@
       "type": "coreclr",
       "request": "launch",
       "program": "${workspaceFolder}/bin/Debug/net8.0/ath.dll",
-      "args": [
-        "fep",
-        "git",
-        "status",
-        "--only-fr-land",
-        "--local",
-        "--timeout-3"
-      ],
+      "args": ["fep", "git", "status", "--only-ath", "--local", "--timeout-3"],
       "cwd": "${workspaceFolder}",
       "stopAtEntry": false,
       "console": "internalConsole"
@@ -36,7 +29,7 @@
       "type": "coreclr",
       "request": "launch",
       "program": "${workspaceFolder}/bin/Debug/net8.0/ath.dll",
-      "args": ["fep", "git", "status", "--skip-fr-land"],
+      "args": ["fep", "git", "status", "--skip-ath"],
       "cwd": "${workspaceFolder}",
       "stopAtEntry": false,
       "console": "internalConsole"
