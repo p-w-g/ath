@@ -46,16 +46,18 @@ namespace ath.commands
             return remainingFolders;
         }
 
-        internal static string[] GetAvailableDirectories(Dictionary<string, string[]> optionsObject)
+        internal static string[] GetAvailableDirectories(
+            Dictionary<string, string[]> InstanceObject
+        )
         {
             Config config = Config.GetConfig();
 
-            string workingDirectory = AssumeWorkingDirectory(optionsObject);
+            string workingDirectory = AssumeWorkingDirectory(InstanceObject);
             string[] AllDirectories = Directory.GetDirectories(workingDirectory);
 
             bool IgnoredFoldersExist = config.IgnoredFolders is not null;
-            bool SkippedFoldersExist = optionsObject.ContainsKey("skip");
-            bool OnlyFoldersExist = optionsObject.ContainsKey("only");
+            bool SkippedFoldersExist = InstanceObject.ContainsKey("skip");
+            bool OnlyFoldersExist = InstanceObject.ContainsKey("only");
 
             if (IgnoredFoldersExist)
             {
@@ -65,13 +67,13 @@ namespace ath.commands
 
             if (SkippedFoldersExist && !OnlyFoldersExist)
             {
-                string[] skippedPaths = optionsObject["skip"];
+                string[] skippedPaths = InstanceObject["skip"];
                 AllDirectories = RemoveTargetDirectories(AllDirectories, skippedPaths);
             }
 
             if (OnlyFoldersExist)
             {
-                string[] onlyPaths = optionsObject["only"];
+                string[] onlyPaths = InstanceObject["only"];
                 AllDirectories = SelectTargetDirectories(AllDirectories, onlyPaths);
             }
 
@@ -88,13 +90,14 @@ namespace ath.commands
             return [.. AllDirectories.Where(dir => Paths.Any(Path => dir.Contains(Path)))];
         }
 
-        internal static string AssumeWorkingDirectory(Dictionary<string, string[]> optionsObject)
+        internal static string AssumeWorkingDirectory(Dictionary<string, string[]> InstanceObject)
         {
             Config config = Config.GetConfig();
+            string LocalDirectory = Directory.GetCurrentDirectory();
 
-            if (optionsObject.ContainsKey("local"))
+            if (InstanceObject.ContainsKey("local"))
             {
-                return Directory.GetCurrentDirectory();
+                return LocalDirectory;
             }
 
             if (config.DefaultFolder is not null)
@@ -102,7 +105,7 @@ namespace ath.commands
                 return config.DefaultFolder;
             }
 
-            return Directory.GetCurrentDirectory();
+            return LocalDirectory;
         }
     }
 }
