@@ -11,7 +11,8 @@ namespace ath.commands
             "timeout",
         };
 
-        private static Dictionary<string, string[]> InstanceObject = [];
+        private static Dictionary<string, string[]> InstanceObject =
+            new Dictionary<string, string[]>();
 
         internal static Dictionary<string, string[]> InstanceParser(string[] args)
         {
@@ -25,12 +26,9 @@ namespace ath.commands
 
         internal static void ParseArgument(string arg)
         {
-            // payload
-            // ie git status along with its own --prune
-            // command
             // workingdirectory
 
-            //options
+            // options
             if (arg.StartsWith("--"))
             {
                 arg = arg.TrimStart('-');
@@ -41,6 +39,11 @@ namespace ath.commands
                     ParseOptions(arg);
                 }
             }
+            // payload
+            else
+            {
+                ParsePayLoad(arg);
+            }
         }
 
         internal static void ParseOptions(string option)
@@ -49,6 +52,13 @@ namespace ath.commands
             string[] values = option.Split('-')[1..] ?? [];
 
             InstanceObject.Add(key, values);
+        }
+
+        internal static void ParsePayLoad(string argument)
+        {
+            var _ = InstanceObject.ContainsKey("PayLoad")
+                ? InstanceObject["PayLoad"] = InstanceObject["PayLoad"].Concat([argument]).ToArray()
+                : InstanceObject["PayLoad"] = [argument];
         }
     }
 }

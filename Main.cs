@@ -7,7 +7,7 @@ if (args.Length == 0)
 }
 string command = args[0].ToLower();
 string[] commandArgs = args.Length > 1 ? args[1..] : Array.Empty<string>();
-
+args = args[1..];
 Dictionary<string, string[]> Instance = cliUtils.InstanceParser(args);
 
 switch (command)
