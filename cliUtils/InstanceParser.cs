@@ -26,8 +26,6 @@ namespace ath.commands
 
         internal static void ParseArgument(string arg)
         {
-            // workingdirectory
-
             // options
             if (arg.StartsWith("--"))
             {
