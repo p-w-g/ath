@@ -1,4 +1,6 @@
-﻿using ath.commands;
+﻿using ath.CliUtils;
+using ath.Commands;
+using ath.Config;
 
 if (args.Length == 0)
 {
@@ -8,7 +10,7 @@ if (args.Length == 0)
 string command = args[0].ToLower();
 string[] commandArgs = args.Length > 1 ? args[1..] : Array.Empty<string>();
 args = args[1..];
-Dictionary<string, string[]> Instance = cliUtils.InstanceParser(args);
+Dictionary<string, string[]> Instance = CliUtils.InstanceParser(args);
 
 switch (command)
 {
@@ -27,7 +29,7 @@ switch (command)
 
     // TODO: implement
     // case "config":
-    //     Config.SetConfig(optionsObject);
+    //     Config(Instance);
     //     break;
 
     case "pcp":
@@ -55,6 +57,6 @@ switch (command)
         break;
 
     default:
-        Console.WriteLine($"Unknown command: {command}");
+        Console.WriteLine($"Unknown command: {command}, refer to help (ath help)");
         break;
 }

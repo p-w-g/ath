@@ -1,67 +1,64 @@
-namespace ath.commands
+namespace ath.CliUtils;
+
+partial class CliUtils
 {
-    partial class cliUtils
+    internal static string[] GetAvailableDirectories(Dictionary<string, string[]> InstanceObject)
     {
-        internal static string[] GetAvailableDirectories(
-            Dictionary<string, string[]> InstanceObject
-        )
+        Config config = Config.GetConfig();
+
+        string workingDirectory = AssumeWorkingDirectory(InstanceObject);
+        string[] AllDirectories = Directory.GetDirectories(workingDirectory);
+
+        bool IgnoredFoldersExist = config.IgnoredFolders is not null;
+        bool SkippedFoldersExist = InstanceObject.ContainsKey("skip");
+        bool OnlyFoldersExist = InstanceObject.ContainsKey("only");
+
+        if (IgnoredFoldersExist)
         {
-            Config config = Config.GetConfig();
-
-            string workingDirectory = AssumeWorkingDirectory(InstanceObject);
-            string[] AllDirectories = Directory.GetDirectories(workingDirectory);
-
-            bool IgnoredFoldersExist = config.IgnoredFolders is not null;
-            bool SkippedFoldersExist = InstanceObject.ContainsKey("skip");
-            bool OnlyFoldersExist = InstanceObject.ContainsKey("only");
-
-            if (IgnoredFoldersExist)
-            {
-                string[] ignoredPaths = [.. config.IgnoredFolders];
-                AllDirectories = RemoveTargetDirectories(AllDirectories, ignoredPaths);
-            }
-
-            if (SkippedFoldersExist && !OnlyFoldersExist)
-            {
-                string[] skippedPaths = InstanceObject["skip"];
-                AllDirectories = RemoveTargetDirectories(AllDirectories, skippedPaths);
-            }
-
-            if (OnlyFoldersExist)
-            {
-                string[] onlyPaths = InstanceObject["only"];
-                AllDirectories = SelectTargetDirectories(AllDirectories, onlyPaths);
-            }
-
-            return AllDirectories;
+            string[] ignoredPaths = [.. config.IgnoredFolders];
+            AllDirectories = RemoveTargetDirectories(AllDirectories, ignoredPaths);
         }
 
-        internal static string[] RemoveTargetDirectories(string[] AllDirectories, string[] Paths)
+        if (SkippedFoldersExist && !OnlyFoldersExist)
         {
-            return [.. AllDirectories.Where(dir => !Paths.Any(Path => dir.Contains(Path)))];
+            string[] skippedPaths = InstanceObject["skip"];
+            AllDirectories = RemoveTargetDirectories(AllDirectories, skippedPaths);
         }
 
-        internal static string[] SelectTargetDirectories(string[] AllDirectories, string[] Paths)
+        if (OnlyFoldersExist)
         {
-            return [.. AllDirectories.Where(dir => Paths.Any(Path => dir.Contains(Path)))];
+            string[] onlyPaths = InstanceObject["only"];
+            AllDirectories = SelectTargetDirectories(AllDirectories, onlyPaths);
         }
 
-        internal static string AssumeWorkingDirectory(Dictionary<string, string[]> InstanceObject)
+        return AllDirectories;
+    }
+
+    internal static string[] RemoveTargetDirectories(string[] AllDirectories, string[] Paths)
+    {
+        return [.. AllDirectories.Where(dir => !Paths.Any(Path => dir.Contains(Path)))];
+    }
+
+    internal static string[] SelectTargetDirectories(string[] AllDirectories, string[] Paths)
+    {
+        return [.. AllDirectories.Where(dir => Paths.Any(Path => dir.Contains(Path)))];
+    }
+
+    internal static string AssumeWorkingDirectory(Dictionary<string, string[]> InstanceObject)
+    {
+        Config config = Config.GetConfig();
+        string LocalDirectory = Directory.GetCurrentDirectory();
+
+        if (InstanceObject.ContainsKey("local"))
         {
-            Config config = Config.GetConfig();
-            string LocalDirectory = Directory.GetCurrentDirectory();
-
-            if (InstanceObject.ContainsKey("local"))
-            {
-                return LocalDirectory;
-            }
-
-            if (config.DefaultFolder is not null)
-            {
-                return config.DefaultFolder;
-            }
-
             return LocalDirectory;
         }
+
+        if (config.DefaultFolder is not null)
+        {
+            return config.DefaultFolder;
+        }
+
+        return LocalDirectory;
     }
 }

@@ -1,11 +1,11 @@
-namespace ath.commands
+namespace ath.Commands;
+
+public static class Help
 {
-    public static class Help
+    public static void ShowHelp()
     {
-        public static void ShowHelp()
-        {
-            string HelpText =
-                @"
+        string HelpText =
+            @"
     Available commands:
  
         help        - Show help information
@@ -32,7 +32,6 @@ namespace ath.commands
         unignore    removes folders from the permanently ignored list
                     `ath ignore .git .idea .vscode`
 ";
-            Console.WriteLine(HelpText);
-        }
+        Console.WriteLine(HelpText);
     }
 }
