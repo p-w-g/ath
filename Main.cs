@@ -8,7 +8,6 @@ if (args.Length == 0)
     return;
 }
 string command = args[0].ToLower();
-string[] commandArgs = args.Length > 1 ? args[1..] : Array.Empty<string>();
 args = args[1..];
 Dictionary<string, string[]> Instance = CliUtils.InstanceParser(args);
 
@@ -27,36 +26,11 @@ switch (command)
         await FEP.RunParallelAsync(Instance);
         break;
 
-    // TODO: implement
-    // case "config":
-    //     Config(Instance);
-    //     break;
-
-    case "pcp":
-        Config.PrintConfigPath();
-        break;
-
-    case "pcf":
-        Config.PrintConfig();
-        break;
-
-    case "swd":
-        Config.SetWorkingDirectory();
-        break;
-
-    case "uwd":
-        Config.UnsetWorkingDirectory();
-        break;
-
-    case "ignore":
-        Config.SetIgnoredDirectories(commandArgs);
-        break;
-
-    case "unignore":
-        Config.UnsetIgnoredDirectories(commandArgs);
+    case "cfg":
+        Config.Evaluate(command, Instance);
         break;
 
     default:
-        Console.WriteLine($"Unknown command: {command}, refer to help (ath help)");
+        Console.WriteLine($"Unknown command: {command} - refer to help (ath help)");
         break;
 }
