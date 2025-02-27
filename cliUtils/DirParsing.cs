@@ -1,5 +1,7 @@
 namespace ath.CliUtils;
 
+using ath.Config;
+
 partial class CliUtils
 {
     internal static string[] GetAvailableDirectories(Dictionary<string, string[]> InstanceObject)
@@ -47,6 +49,7 @@ partial class CliUtils
     internal static string AssumeWorkingDirectory(Dictionary<string, string[]> InstanceObject)
     {
         Config config = Config.GetConfig();
+
         string LocalDirectory = Directory.GetCurrentDirectory();
 
         if (InstanceObject.ContainsKey("local"))

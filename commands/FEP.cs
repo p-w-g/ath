@@ -1,5 +1,7 @@
 namespace ath.Commands;
 
+using ath.CliUtils;
+
 public static class FEP
 {
     public static async Task RunParallelAsync(Dictionary<string, string[]> Instance)
