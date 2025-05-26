@@ -4,22 +4,23 @@ namespace ath.Config;
 
 partial class Config
 {
-    public static void SetIgnoredDirectories(string[] folders)
+    public static void SetIgnoredDirectories(string[] Folders)
     {
-        if (folders.Length == 0)
+        if (Folders.Length == 0)
         {
-            Console.WriteLine("Usage: ath ignore <list of folders separated by space>");
+            Console.WriteLine("Usage: ath cfg ignore <list of folders separated by space>");
             return;
         }
+
         Config config = GetConfig();
 
         if (config.IgnoredFolders == null)
         {
-            config.IgnoredFolders = [.. folders];
+            config.IgnoredFolders = [.. Folders];
         }
         else
         {
-            foreach (var folder in folders)
+            foreach (var folder in Folders)
             {
                 if (config.IgnoredFolders.Contains(folder))
                 {
@@ -36,15 +37,21 @@ partial class Config
         SaveConfig(config);
     }
 
-    public static void UnsetIgnoredDirectories(string[] folders)
+    public static void UnsetIgnoredDirectories(string[] Folders, bool all = false)
     {
-        if (folders.Length == 0)
+        Config config = GetConfig();
+        if (all)
+        {
+            config.IgnoredFolders = null;
+            SaveConfig(config);
+            return;
+        }
+        if (Folders.Length == 0)
         {
             Console.WriteLine("Usage: ath unignore <list of folders separated by space>");
             return;
         }
 
-        Config config = GetConfig();
         string deepCopy = JsonSerializer.Serialize(config);
         Config prevConfig = JsonSerializer.Deserialize<Config>(deepCopy)!;
 
@@ -54,7 +61,7 @@ partial class Config
             return;
         }
 
-        foreach (var folder in folders)
+        foreach (var folder in Folders)
         {
             if (config.IgnoredFolders.Contains(folder))
             {

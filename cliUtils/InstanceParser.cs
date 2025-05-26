@@ -9,6 +9,7 @@ partial class CliUtils
         "skip",
         "only",
         "timeout",
+        "all",
     };
 
     private static Dictionary<string, string[]> InstanceObject = new Dictionary<string, string[]>();
