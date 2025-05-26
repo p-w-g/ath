@@ -2,36 +2,37 @@ namespace ath.Config;
 
 partial class Config
 {
-    public static void Evaluate(string command, Dictionary<string, string[]> Instance)
+    public static void Evaluate(Dictionary<string, string[]> Instance)
     {
+        string[] configInstance = Instance["PayLoad"];
+        string command = configInstance[0].ToLower();
+        string[] Payload = configInstance[1..];
+
         switch (command)
         {
-            case "pcp"
-            or "path":
+            case "path":
                 PrintConfigPath();
                 break;
 
-            case "pcf"
-            or "file":
+            case "file":
                 PrintConfig();
                 break;
 
-            case "swd"
-            or "here":
+            case "here":
                 SetWorkingDirectory();
                 break;
 
-            case "uwd"
-            or "away":
+            case "away":
                 UnsetWorkingDirectory();
                 break;
 
             case "ignore":
-                SetIgnoredDirectories(Instance);
+                SetIgnoredDirectories(Payload);
                 break;
 
-            case "unignore":
-                UnsetIgnoredDirectories(Instance);
+            case "heed":
+                bool clearAll = Instance.ContainsKey("all");
+                UnsetIgnoredDirectories(Payload, clearAll);
                 break;
 
             default:
