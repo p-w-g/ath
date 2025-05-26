@@ -27,7 +27,7 @@ switch (command)
         break;
 
     case "cfg":
-        Config.Evaluate(command, Instance);
+        Config.Evaluate(Instance);
         break;
 
     default:
