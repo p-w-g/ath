@@ -12,6 +12,9 @@ partial class Config
     [JsonPropertyName("ignoredFolders")]
     public List<string>? IgnoredFolders { get; set; }
 
+    [JsonPropertyName("timeOut")]
+    public int? TimeOut { get; set; }
+
     static string GetHomeDir()
     {
         bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
