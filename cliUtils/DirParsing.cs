@@ -4,10 +4,11 @@ using ath.Config;
 
 partial class CliUtils
 {
-    internal static string[] GetAvailableDirectories(Dictionary<string, string[]> InstanceObject)
+    internal static string[] GetAvailableDirectories(
+        Dictionary<string, string[]> InstanceObject,
+        Config config
+    )
     {
-        Config config = Config.GetConfig();
-
         string workingDirectory = AssumeWorkingDirectory(InstanceObject);
         string[] AllDirectories = Directory.GetDirectories(workingDirectory);
 
