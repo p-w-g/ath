@@ -35,6 +35,14 @@ partial class Config
                 UnsetIgnoredDirectories(Payload, clearAll);
                 break;
 
+            case "to":
+                SetTimeout(Payload[0]);
+                break;
+
+            case "nto":
+                UnsetTimeout();
+                break;
+
             default:
                 Console.WriteLine($"Unknown config command: {command} - refer to help (ath help)");
                 break;
