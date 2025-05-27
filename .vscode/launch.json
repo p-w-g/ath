@@ -39,7 +39,17 @@
       "type": "coreclr",
       "request": "launch",
       "program": "${workspaceFolder}/bin/Debug/net8.0/ath.dll",
-      "args": ["cfg", "to", "500"], //set timeout too 500 sec
+      "args": ["cfg", "to", "500"], // set timeout to 500 sec
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    },
+    {
+      "name": "set 0 timeout",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/bin/Debug/net8.0/ath.dll",
+      "args": ["cfg", "to", "0"], // reset timeout by setting 0
       "cwd": "${workspaceFolder}",
       "stopAtEntry": false,
       "console": "internalConsole"
