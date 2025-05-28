@@ -2,10 +2,13 @@ using System.Diagnostics;
 
 namespace ath.CliUtils;
 
+using ath.Config;
+
 partial class CliUtils
 {
     internal static async Task RunCommand(
         Dictionary<string, string[]> Instance,
+        Config config,
         string workingDirectory = ""
     )
     {
@@ -37,21 +40,30 @@ partial class CliUtils
             Task<string> output = process.StandardOutput.ReadToEndAsync();
             Task<string> error = process.StandardError.ReadToEndAsync();
 
-            // Timeouts, Sustain and Config
-            // if (sustain)
-            // {
-            //     process.WaitForExit();
-            // }
-            // else
-            // {
-            // bool exited = await Task.Run(() => process.WaitForExit(300000));
-            // if (!exited)
-            // {
-            //     Console.WriteLine($"Command timed out in {workingDirectory} after 5 minutes.");
-            //     process.Kill();
-            //     return;
-            // }
-            // }
+            bool TimeOutConfigged = config.TimeOut is not null;
+            bool TimeOutFlagged = Instance.ContainsKey("timeout");
+            bool sustain = Instance.ContainsKey("sustain");
+            int TimeOutDuration;
+
+            if (sustain || (!TimeOutConfigged && !TimeOutFlagged))
+            {
+                process.WaitForExit();
+            }
+            else if (TimeOutFlagged || TimeOutConfigged)
+            {
+                TimeOutDuration = TimeOutFlagged
+                    ? int.Parse(Instance["timeout"][0])
+                    : (int)config.TimeOut;
+                TimeOutDuration = TimeOutDuration * 1000;
+
+                bool exited = await Task.Run(() => process.WaitForExit(TimeOutDuration));
+                if (!exited)
+                {
+                    Console.WriteLine($"Command timed out in {workingDirectory} after 5 minutes.");
+                    process.Kill();
+                    return;
+                }
+            }
 
             process.WaitForExit();
             if (process.ExitCode == 0)
