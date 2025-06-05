@@ -31,6 +31,14 @@ Available commands:
                     `ath cfg heed .git .idea .vscode`
                     or
                     `ath cfg heed --all`
+                    
+    cfg to          sets timeout in seconds 
+                    `ath cfg to 30`
+                    or disables timeout if passed 0 - same as nto
+                    `ath cfg to 0`
+    cfg nto         disables timeout
+                    `ath cfg nto`
+
 ";
         Console.WriteLine(HelpText);
     }
