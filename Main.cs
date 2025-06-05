@@ -1,46 +1,36 @@
-﻿if (args.Length == 0)
+﻿using ath.CliUtils;
+using ath.Commands;
+using ath.Config;
+
+if (args.Length == 0)
 {
     Console.WriteLine("Usage: ath <command> [arguments]");
     return;
 }
 string command = args[0].ToLower();
-string[] commandArgs = args.Length > 1 ? args[1..] : Array.Empty<string>();
+args = args[1..];
+Dictionary<string, string[]> Instance = CliUtils.InstanceParser(args);
 
 switch (command)
 {
-    case "help" or "h" or "-h" or "--h" or "-help" or "--help":
-        ath.commands.Help.ShowHelp();
+    case "help"
+    or "h"
+    or "-h"
+    or "--h"
+    or "-help"
+    or "--help":
+        Help.ShowHelp();
         break;
 
     case "fep":
-        await ath.commands.FEP.RunParallelAsync(commandArgs);
+        await FEP.RunParallelAsync(Instance);
         break;
 
-    case "pcp":
-        ath.commands.Config.PrintConfigPath();
-        break;
-
-    case "pcf":
-        ath.commands.Config.PrintConfig();
-        break;
-
-    case "swd":
-        ath.commands.Config.SetWorkingDirectory();
-        break;
-
-    case "uwd":
-        ath.commands.Config.UnsetWorkingDirectory();
-        break;
-
-    case "ignore":
-        ath.commands.Config.SetIgnoredDirectories(commandArgs);
-        break;
-
-    case "unignore":
-        ath.commands.Config.UnsetIgnoredDirectories(commandArgs);
+    case "cfg":
+        Config.Evaluate(Instance);
         break;
 
     default:
-        Console.WriteLine($"Unknown command: {command}");
+        Console.WriteLine($"Unknown command: {command} - refer to help (ath help)");
         break;
 }

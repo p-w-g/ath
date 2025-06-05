@@ -1,37 +1,45 @@
-namespace ath.commands
+namespace ath.Commands;
+
+public static class Help
 {
-    public static class Help
+    public static void ShowHelp()
     {
-        public static void ShowHelp()
-        {
-            string HelpText = @"
-    Available commands:
+        string HelpText =
+            @"
+Available commands:
  
-        help        - Show help information
-        
-        fep         - Run command for nested folders in CWD.
+    * help          Show help information
+    
+    * fep           Run command for nested folders in CWD.
                     takes a list of optional folders to either skip or run command in, separated by '-'
                     `ath fep <<command>> [--skip-foo-bar-baz || --only-gris-gras-gres]`
                     
-                    by default timeouts tasks longer than 5 minutes, 
-                    which can be overrun by `--sustain` flag
-        
                     by default runs in current working folder or set working folder, 
                     which can be temporarily overrun with `--local` flag    
 
-        pcp         prints out config file's path
-        pcf         prints out config file's content
-        
-        swd         sets current working directory as a default working directory for future
+    * cfg (config)
+    cfg path        prints out config file's path
+    cfg file        prints out config file's content
+    
+    cfg here        sets current working directory as a default working directory for future
                     uses with fep, untill it gets unset or new directory is set
-        uwd         unsets default working directory and allows running fep in current working directory
+    cfg away        unsets default working directory and allows running fep in current working directory
 
-        ignore      adds folders to the permanently ignored list 
-                    `ath ignore .git .idea .vscode`
-        unignore    removes folders from the permanently ignored list
-                    `ath ignore .git .idea .vscode`
+    cfg ignore      adds folders to the permanently ignored list 
+                    `ath cfg ignore .git .idea .vscode`
+    cfg heed        removes folders from the permanently ignored list
+                    `ath cfg heed .git .idea .vscode`
+                    or
+                    `ath cfg heed --all`
+                    
+    cfg to          sets timeout in seconds 
+                    `ath cfg to 30`
+                    or disables timeout if passed 0 - same as nto
+                    `ath cfg to 0`
+    cfg nto         disables timeout
+                    `ath cfg nto`
+
 ";
-            Console.WriteLine(HelpText);
-        }
+        Console.WriteLine(HelpText);
     }
 }
