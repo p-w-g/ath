@@ -7,6 +7,14 @@ public static class FEP
 {
     public static async Task RunParallelAsync(Dictionary<string, string[]> Instance)
     {
+        if (!Instance.ContainsKey("PayLoad"))
+        {
+            Console.WriteLine(
+                "Usage: ath fep <<command>> [--skip-foo-bar-baz || --only-gris-gras-gres]"
+            );
+            return;
+        }
+
         Config config = Config.GetConfig();
         string[] availableDirs = CliUtils.GetAvailableDirectories(Instance, config);
 
