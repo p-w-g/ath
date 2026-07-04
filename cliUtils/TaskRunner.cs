@@ -18,7 +18,7 @@ partial class CliUtils
             : "'" + argument.Replace("'", "'\\''") + "'";
     }
 
-    internal static async Task RunCommand(
+    internal static async Task<bool> RunCommand(
         Dictionary<string, string[]> Instance,
         Config config,
         string workingDirectory = ""
@@ -73,7 +73,7 @@ partial class CliUtils
                 {
                     Console.WriteLine($"Command timed out in {workingDirectory} after 5 minutes.");
                     process.Kill();
-                    return;
+                    return false;
                 }
             }
 
@@ -82,17 +82,20 @@ partial class CliUtils
             {
                 Console.WriteLine($"Command executed successfully in {workingDirectory}.");
                 Console.WriteLine(await output);
+                return true;
             }
             else
             {
                 Console.WriteLine($"Command failed gracefully in {workingDirectory}.");
                 Console.WriteLine(await error);
+                return false;
             }
         }
         catch (Exception e)
         {
             Console.WriteLine($"Caught exception in {workingDirectory} with error:");
             Console.WriteLine(e);
+            return false;
         }
         finally
         {
