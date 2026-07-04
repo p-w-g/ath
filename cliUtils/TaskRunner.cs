@@ -6,19 +6,31 @@ using ath.Config;
 
 partial class CliUtils
 {
+    internal static string QuoteArgumentIfNeeded(string argument, bool isWindows)
+    {
+        if (!argument.Any(char.IsWhiteSpace))
+        {
+            return argument;
+        }
+
+        return isWindows
+            ? "\"" + argument.Replace("\"", "\\\"") + "\""
+            : "'" + argument.Replace("'", "'\\''") + "'";
+    }
+
     internal static async Task RunCommand(
         Dictionary<string, string[]> Instance,
         Config config,
         string workingDirectory = ""
     )
     {
-        string command = string.Join(" ", Instance["PayLoad"]);
-        string shell =
-            Environment.OSVersion.Platform == PlatformID.Win32NT ? "cmd.exe" : "/bin/bash";
-        string shellArguments =
-            Environment.OSVersion.Platform == PlatformID.Win32NT
-                ? $"/c {command}"
-                : $"-c \"{command}\"";
+        bool isWindows = Environment.OSVersion.Platform == PlatformID.Win32NT;
+        string command = string.Join(
+            " ",
+            Instance["PayLoad"].Select(arg => QuoteArgumentIfNeeded(arg, isWindows))
+        );
+        string shell = isWindows ? "cmd.exe" : "/bin/bash";
+        string shellArguments = isWindows ? $"/c {command}" : $"-c \"{command}\"";
 
         var processInfo = new ProcessStartInfo(shell, shellArguments)
         {
