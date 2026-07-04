@@ -53,7 +53,9 @@ partial class CliUtils
         string remainder = separatorIndex < 0 ? "" : option[(separatorIndex + 1)..];
         string[] values = remainder.Length == 0 ? [] : remainder.Split(',');
 
-        InstanceObject.Add(key, values);
+        InstanceObject[key] = InstanceObject.TryGetValue(key, out string[]? existing)
+            ? [.. existing, .. values]
+            : values;
     }
 
     internal static string[] ParsePayLoad(string argument)
