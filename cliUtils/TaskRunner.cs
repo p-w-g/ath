@@ -72,7 +72,7 @@ partial class CliUtils
                 if (!exited)
                 {
                     Console.WriteLine($"Command timed out in {workingDirectory} after 5 minutes.");
-                    process.Kill();
+                    process.Kill(entireProcessTree: true);
                     return false;
                 }
             }
