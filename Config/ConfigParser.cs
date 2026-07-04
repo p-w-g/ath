@@ -35,7 +35,22 @@ partial class Config
         }
         string config = File.ReadAllText(defaultConfigPath);
 
-        return JsonSerializer.Deserialize<Config>(config) ?? new Config();
+        return ParseConfig(config);
+    }
+
+    internal static Config ParseConfig(string json)
+    {
+        try
+        {
+            return JsonSerializer.Deserialize<Config>(json) ?? new Config();
+        }
+        catch (JsonException)
+        {
+            Console.WriteLine(
+                $"Warning: config file at {defaultConfigPath} is corrupted or invalid; using default settings."
+            );
+            return new Config();
+        }
     }
 
     private static void SaveConfig(Config config)
