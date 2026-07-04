@@ -23,5 +23,10 @@
   <ItemGroup>
     <None Include="README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="ath.Tests/**" />
+    <EmbeddedResource Remove="ath.Tests/**" />
+    <None Remove="ath.Tests/**" />
+  </ItemGroup>
 
 </Project>

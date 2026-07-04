@@ -16,6 +16,8 @@ partial class CliUtils
 
     internal static Dictionary<string, string[]> InstanceParser(string[] args)
     {
+        InstanceObject = new Dictionary<string, string[]>();
+
         foreach (string arg in args)
         {
             ParseArgument(arg);
