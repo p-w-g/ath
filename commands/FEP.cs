@@ -10,7 +10,7 @@ public static class FEP
         if (!Instance.ContainsKey("PayLoad"))
         {
             Console.WriteLine(
-                "Usage: ath fep <<command>> [--skip-foo-bar-baz || --only-gris-gras-gres]"
+                "Usage: ath fep <<command>> [--skip-foo,bar,baz || --only-gris,gras,gres]"
             );
             return;
         }
