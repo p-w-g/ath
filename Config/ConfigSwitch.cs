@@ -4,7 +4,12 @@ partial class Config
 {
     public static void Evaluate(Dictionary<string, string[]> Instance)
     {
-        string[] configInstance = Instance["PayLoad"];
+        if (!Instance.TryGetValue("PayLoad", out string[]? configInstance) || configInstance.Length == 0)
+        {
+            Console.WriteLine("Usage: ath cfg <command> [arguments] - refer to help (ath help)");
+            return;
+        }
+
         string command = configInstance[0].ToLower();
         string[] Payload = configInstance[1..];
 
@@ -36,6 +41,11 @@ partial class Config
                 break;
 
             case "to":
+                if (Payload.Length == 0)
+                {
+                    Console.WriteLine("Usage: ath cfg to <duration in seconds>");
+                    break;
+                }
                 SetTimeout(Payload[0]);
                 break;
 

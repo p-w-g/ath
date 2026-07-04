@@ -23,7 +23,11 @@ switch (command)
         break;
 
     case "fep":
-        await FEP.RunParallelAsync(Instance);
+        bool success = await FEP.RunParallelAsync(Instance);
+        if (!success)
+        {
+            Environment.Exit(1);
+        }
         break;
 
     case "cfg":

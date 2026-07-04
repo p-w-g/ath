@@ -38,7 +38,7 @@ If you see the help menu, you’re good to go!
 ### Usage
 
 ```sh
-ath fep <<command>> [--skip-foo-bar-baz || --only-gris-gras-gräs]
+ath fep <<command>> [--skip-foo,bar,baz || --only-gris,gras,gräs]
 ```
 
 ## Full documentation

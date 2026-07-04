@@ -11,8 +11,8 @@ Available commands:
     * help          Show help information
     
     * fep           Run command for nested folders in CWD.
-                    takes a list of optional folders to either skip or run command in, separated by '-'
-                    `ath fep <<command>> [--skip-foo-bar-baz || --only-gris-gras-gres]`
+                    takes a list of optional folders to either skip or run command in, separated by ','
+                    `ath fep <<command>> [--skip-foo,bar,baz || --only-gris,gras,gres]`
                     
                     by default runs in current working folder or set working folder, 
                     which can be temporarily overrun with `--local` flag    

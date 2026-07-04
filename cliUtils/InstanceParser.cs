@@ -16,6 +16,8 @@ partial class CliUtils
 
     internal static Dictionary<string, string[]> InstanceParser(string[] args)
     {
+        InstanceObject = new Dictionary<string, string[]>();
+
         foreach (string arg in args)
         {
             ParseArgument(arg);
@@ -46,10 +48,14 @@ partial class CliUtils
 
     internal static void ParseOptions(string option)
     {
-        string key = option.Split('-')[0];
-        string[] values = option.Split('-')[1..] ?? [];
+        int separatorIndex = option.IndexOf('-');
+        string key = separatorIndex < 0 ? option : option[..separatorIndex];
+        string remainder = separatorIndex < 0 ? "" : option[(separatorIndex + 1)..];
+        string[] values = remainder.Length == 0 ? [] : remainder.Split(',');
 
-        InstanceObject.Add(key, values);
+        InstanceObject[key] = InstanceObject.TryGetValue(key, out string[]? existing)
+            ? [.. existing, .. values]
+            : values;
     }
 
     internal static string[] ParsePayLoad(string argument)

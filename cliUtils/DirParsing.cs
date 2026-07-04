@@ -39,12 +39,12 @@ partial class CliUtils
 
     internal static string[] RemoveTargetDirectories(string[] AllDirectories, string[] Paths)
     {
-        return [.. AllDirectories.Where(dir => !Paths.Any(Path => dir.Contains(Path)))];
+        return [.. AllDirectories.Where(dir => !Paths.Contains(Path.GetFileName(dir)))];
     }
 
     internal static string[] SelectTargetDirectories(string[] AllDirectories, string[] Paths)
     {
-        return [.. AllDirectories.Where(dir => Paths.Any(Path => dir.Contains(Path)))];
+        return [.. AllDirectories.Where(dir => Paths.Contains(Path.GetFileName(dir)))];
     }
 
     internal static string AssumeWorkingDirectory(Dictionary<string, string[]> InstanceObject)
